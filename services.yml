@@ -1,0 +1,14 @@
+---
+- name: Load Homeserver Services
+  hosts: HomeServer
+  become: true
+
+  tasks:
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: ./compose
+        dest: /var
+        owner: ubuntu
+        group: ubuntu
+        mode: '0775'
+

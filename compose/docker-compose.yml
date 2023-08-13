@@ -1,0 +1,37 @@
+---
+version: '3.5'
+services:
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+    volumes:
+      - /mnt/nfs/docker_configs/Transmission:/config
+      - /mnt/nfs/Movies:/downloads/Movies
+      - /mnt/nfs/Tv/sonarr:/downloads/Tv
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  prowlarr:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  radarr:
+    image: containrrr/radarr
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+
+
+

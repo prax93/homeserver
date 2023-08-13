@@ -1,0 +1,60 @@
+---
+
+- name: Initial Server Setup
+  hosts: HomeServer
+  become: true
+  vars:
+    username: "example@domain"
+    password: "password"
+  tasks:
+    - name: "Install Docker dependencies"
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - pip
+          - python3
+        state: present
+    - name: Install Jellyfin
+      ansible.builtin.apt:
+        name:
+          - jellyfin
+        state: present
+    - name: Install Plex
+      community.general.snap:
+        name:
+          - plexmediaserver
+        state: present
+    - name: Install CIFS-Utils for Samba Share
+      ansible.builtin.apt:
+        name: cifs-utils
+        state: present
+    - name: Install Docker
+      ansible.builtin.apt:
+        name:
+          - containerd
+          - docker.io
+          - docker-compose
+        state: present
+    # Create Docker group
+    - name: Ensure group "docker" exists
+      ansible.builtin.group:
+        name: docker
+        state: present
+    # Mount Smb drive
+    - name: Mount SMB Share
+      ansible.posix.mount:
+        src: 192.168.0.50:/volume1/Plex
+        path: /mnt/nfs
+        fstype: cifs
+        opts: 'username={{ username }},password={{ password }}'
+        state: mounted
+        boot: true
+    - name: "Install PIP Docker"
+      ansible.builtin.pip:
+        name:
+          - docker
+          - docker-compose
+          - jsondiff
