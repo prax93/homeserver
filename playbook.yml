@@ -3,24 +3,43 @@
 - name: Initial Server Setup
   hosts: HomeServer
   become: true
-  vars:
-  vars_prompt: 
+
+  vars_prompt:
     - name: sambapresent
       prompt: "Do you own a Samba share ? [y/n] "
+
   tasks:
+
     - name: Prompt for Samba username
       pause:
         prompt: "Enter your smb username: "
       when: sambapresent == "y"
       register: username
 
-    - name: Prompt for Samba username
+    - name: Prompt for Samba password
       pause:
-        prompt: "Enter your smb username: "
+        prompt: "Enter your smb password: "
       when: sambapresent == "y"
       register: password
-  
-    - name: "Install Docker dependencies" 
+
+    - name: Install CIFS-Utils for Samba Share
+      when: sambapresent == "y"
+      ansible.builtin.apt:
+        name: cifs-utils
+        state: present
+
+    # Mount Smb drive
+    - name: Mount SMB Share
+      when: sambapresent == "y" and username != "" and password != ""
+      ansible.posix.mount:
+        src: 192.168.0.50:/volume1/Plex
+        path: /mnt/nfs
+        fstype: cifs
+        opts: 'username={{ username }},password={{ password }}'
+        state: mounted
+        boot: true
+
+    - name: Install Docker dependencies
       ansible.builtin.apt:
         name:
           - ca-certificates
@@ -30,24 +49,21 @@
           - pip
           - python3
         state: present
-    - name: Install CIFS-Utils for Samba Share
+
+    - name: Install Docker
       ansible.builtin.apt:
-        name: cifs-utils
+        name:
+          - containerd
+          - docker.io
+          - docker-compose
         state: present
-        when:
-          - sambapresent == "y"
-          - username != null
-          - password != null
-    # Mount Smb drive
-    - name: Mount SMB Share
-      ansible.posix.mount:
-        src: 192.168.0.50:/volume1/Plex
-        path: /mnt/nfs
-        fstype: cifs
-        opts: 'username={{ username }},password={{ password }}'
-        state: mounted
-        boot: true
-        when: sambapresent == "y" && username != null && password != null
+
+    - name: Install PIP Docker
+      ansible.builtin.pip:
+        name:
+          - docker
+          - docker-compose
+          - jsondiff
 
     - name: Install Jellyfin
       ansible.builtin.apt:
@@ -60,24 +76,3 @@
         name:
           - plexmediaserver
         state: present
-
-    - name: Install Docker
-      ansible.builtin.apt:
-        name:
-          - containerd
-          - docker.io
-          - docker-compose
-        state: present
-
-    # Create Docker group
-    - name: Ensure group "docker" exists
-      ansible.builtin.group:
-        name: docker
-        state: present
-        
-    - name: Install PIP Docker
-      ansible.builtin.pip:
-        name:
-          - docker
-          - docker-compose
-          - jsondiff
