@@ -12,6 +12,6 @@
 - Ansible Installed
 
 # Flow Diagram
-![Flow Diagram](./Diagram.svg)
+![Flow Diagram Ansible Playbook](./Documentation/Diagram.svg)
 
 # How To
