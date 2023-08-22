@@ -6,7 +6,7 @@
   tasks:
     - name: Copy file with owner and permissions
       ansible.builtin.copy:
-        src: ./compose
+        src: ./Compose
         dest: /var/compose
         owner: ubuntu
         group: ubuntu
