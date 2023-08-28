@@ -14,13 +14,19 @@
       pause:
         prompt: "Enter your smb username: "
       when: sambapresent == "y"
-      register: username
+      register: smbUsername
 
     - name: Prompt for Samba password
       pause:
         prompt: "Enter your smb password: "
       when: sambapresent == "y"
-      register: password
+      register: smbPassword
+
+    - name: Prompt for Samba Path
+      pause:
+        prompt: "Enter your smb Path (ip:/sharelocation): "
+      when: sambapresent == "y"
+      register: shareLocation
 
     - name: Install CIFS-Utils for Samba Share
       when: sambapresent == "y"
@@ -32,10 +38,10 @@
     - name: Mount SMB Share
       when: sambapresent == "y" and username != "" and password != ""
       ansible.posix.mount:
-        src: 192.168.0.50:/volume1/Plex
+        src: '{{ shareLocation }}'
         path: /mnt/nfs
         fstype: cifs
-        opts: 'username={{ username }},password={{ password }}'
+        opts: 'username={{ smbUsername }},password={{ smbPassword }}'
         state: mounted
         boot: true
 
@@ -64,6 +70,14 @@
           - docker
           - docker-compose
           - jsondiff
+
+    # To do
+    # Create Group named Docker
+    - name: Create Docker Group
+
+    # To do
+    # Append User to Docker Group
+    - name: Append User to Docker Group
 
     - name: Install Jellyfin
       ansible.builtin.apt:
