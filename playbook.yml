@@ -72,7 +72,7 @@
           - jsondiff
 
     # Create Group named Docker
-    - name: Ensure group "somegroup" exists
+    - name: Ensure group "Docker" exists
       ansible.builtin.group:
         name: docker
         state: present
