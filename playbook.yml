@@ -14,19 +14,19 @@
       pause:
         prompt: "Enter your smb username: "
       when: sambapresent == "y"
-      register: smbUsername
+      register: smbusername
 
     - name: Prompt for Samba password
       pause:
         prompt: "Enter your smb password: "
       when: sambapresent == "y"
-      register: smbPassword
+      register: smbpassword
 
     - name: Prompt for Samba Path
       pause:
         prompt: "Enter your smb Path (ip:/sharelocation): "
       when: sambapresent == "y"
-      register: shareLocation
+      register: sharelocation
 
     - name: Install CIFS-Utils for Samba Share
       when: sambapresent == "y"
@@ -36,12 +36,12 @@
 
     # Mount Smb drive
     - name: Mount SMB Share
-      when: sambapresent == "y" and username != "" and password != ""
+      when: sambapresent == "y"
       ansible.posix.mount:
-        src: '{{ shareLocation }}'
+        src: "{{ sharelocation }}"
         path: /mnt/nfs
         fstype: cifs
-        opts: 'username={{ smbUsername }},password={{ smbPassword }}'
+        opts: "username={{ smbusername }},password={{ smbpassword }}"
         state: mounted
         boot: true
 
@@ -71,20 +71,28 @@
           - docker-compose
           - jsondiff
 
-    # To do
     # Create Group named Docker
-    - name: Create Docker Group
+    - name: Ensure group "somegroup" exists
+      ansible.builtin.group:
+        name: docker
+        state: present
 
-    # To do
     # Append User to Docker Group
     - name: Append User to Docker Group
+      ansible.builtin.user:
+        name: "{{ ansible_env.USER }}"
+        groups:
+          - docker
+        append: true
 
+    # Install Jellyfin Server
     - name: Install Jellyfin
       ansible.builtin.apt:
         name:
           - jellyfin
         state: present
 
+    # Install Plex Media Server
     - name: Install Plex
       community.general.snap:
         name:
