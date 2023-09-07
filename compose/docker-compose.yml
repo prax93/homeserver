@@ -1,5 +1,5 @@
 ---
-version: '3.5'
+version: '3.8'
 services:
 
   transmission:
@@ -16,9 +16,12 @@ services:
       - ${tvShows}:/downloads/Tv
     ports:
       - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
+    labels:
+      - "traefik.http.routers.transmission.rule=Host(`transmission.localhost`)"
+    depends_on:
+      - traefik
     restart: unless-stopped
+
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     environment:
@@ -32,7 +35,12 @@ services:
       - ${downloads}:/downloads
       - ${movies}:/downloads/Movies
       - ${tvShows}:/downloads/Tv
+    labels:
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.localhost`)"
+    depends_on:
+      - traefik
     restart: unless-stopped
+
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     environment:
@@ -46,7 +54,12 @@ services:
       - ${downloads}:/downloads
       - ${movies}:/downloads/Movies
       - ${tvShows}:/downloads/Tv
+    labels:
+      - "traefik.http.routers.radarr.rule=Host(`radarr.localhost`)"
+    depends_on:
+      - traefik
     restart: unless-stopped
+
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
@@ -57,12 +70,31 @@ services:
       - 9696:9696
     volumes:
       - ${configs}Prowlarr:/config
+    labels:
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.localhost`)"
+    depends_on:
+      - traefik
     restart: unless-stopped
+
   watchtower:
     image: containrrr/watchtower:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.http.routers.watchtower.rule=Host(`watchtower.localhost`)"
+    depends_on:
+      - traefik
     restart: unless-stopped
+
+  traefik:
+    image: traefik:v2.10
+    ports:
+      - 8080:8080
+      - 80:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
 
 
 
