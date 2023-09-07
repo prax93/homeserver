@@ -17,6 +17,7 @@ services:
     ports:
       - 9091:9091
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.transmission.rule=Host(`transmission.localhost`)"
     depends_on:
       - traefik
@@ -36,6 +37,7 @@ services:
       - ${movies}:/downloads/Movies
       - ${tvShows}:/downloads/Tv
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.localhost`)"
     depends_on:
       - traefik
@@ -55,6 +57,7 @@ services:
       - ${movies}:/downloads/Movies
       - ${tvShows}:/downloads/Tv
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.radarr.rule=Host(`radarr.localhost`)"
     depends_on:
       - traefik
@@ -71,6 +74,7 @@ services:
     volumes:
       - ${configs}Prowlarr:/config
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.localhost`)"
     depends_on:
       - traefik
@@ -81,6 +85,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.watchtower.rule=Host(`watchtower.localhost`)"
     depends_on:
       - traefik
@@ -93,6 +98,12 @@ services:
       - 80:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
     restart: unless-stopped
 
 
