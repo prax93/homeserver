@@ -23,7 +23,8 @@ Coming Soon
 - [x] Ask for smb share
 - [x] Skip cifs install
 - [x] Skip mounting smb share
-- [ ] Enter Samba Share Location (ip:/sharedFolder) when samba exists
+- [-] Create Docker Group and append User to the Group
+- [-] Enter Samba Share Location (ip:/sharedFolder) when samba exists
 - [ ] Enter Mount point (/mnt/media)
 - [ ] Enter movies location (/mnt/media/Movies)
 - [ ] Enter TV-shows location (/mnt/media/TV)
