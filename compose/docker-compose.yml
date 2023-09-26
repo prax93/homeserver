@@ -2,7 +2,7 @@
 version: '3.8'
 services:
 
-  transmission:
+  transmission-movies:
     image: lscr.io/linuxserver/transmission:latest
     container_name: transmission
     environment:
@@ -10,15 +10,33 @@ services:
       - PGID=1000
       - TZ=Europe/Zurich
     volumes:
-      - ${configs}Transmission:/config
-      - ${downloads}:/downloads
-      - ${movies}:/downloads/Movies
-      - ${tvShows}:/downloads/Tv
+      - ${configs}Transmission-Movies:/config
+      - ${movies}:/downloads/complete
     ports:
       - 9091:9091
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.transmission.rule=Host(`transmission.localhost`)"
+      - "traefik.http.routers.transmission.rule=Host(`transmission-movies.localhost`)"
+    depends_on:
+      - traefik
+    restart: unless-stopped
+
+  transmission-tv:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+    volumes:
+      - ${configs}Transmission-TV:/config
+      - ${downloads}:/downloads/complete
+      - ${tv}:/downloads/Tv
+    ports:
+      - 9092:9092
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.transmission.rule=Host(`transmission-tv.localhost`)"
     depends_on:
       - traefik
     restart: unless-stopped
