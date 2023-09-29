@@ -14,11 +14,6 @@ services:
       - ${movies}:/downloads/complete
     ports:
       - 9091:9091
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.transmissionmovie.rule=Host(`transmission-movie.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
 
   transmissiontv:
@@ -34,11 +29,6 @@ services:
       - ${tvShows}:/downloads/Tv
     ports:
       - 9092:9091
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.transmissiontv.rule=Host(`transmission-tv.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
 
   sonarr:
@@ -53,11 +43,6 @@ services:
       - ${configs}Sonarr:/config
       - ${downloads}:/downloads
       - ${tvShows}:/downloads/Tv
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
 
   radarr:
@@ -72,11 +57,6 @@ services:
       - ${configs}Radarr:/config
       - ${downloads}:/downloads
       - ${movies}:/downloads/Movies
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
 
   prowlarr:
@@ -89,41 +69,36 @@ services:
       - 9696:9696
     volumes:
       - ${configs}Prowlarr:/config
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
 
   watchtower:
     image: containrrr/watchtower:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.watchtower.rule=Host(`watchtower.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
 
-  traefik:
-    image: traefik:v2.10
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
     ports:
-      - 8080:8080
-      - 80:80
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "8080:80/tcp"
+    environment:
+      TZ: 'Europe/Zurich'
+      WEBPASSWORD: 'set a secure password here or it will be random'
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
+      - ${configs}Pihole:/config
     restart: unless-stopped
 
-
-
-
-
+  nginxrevproxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '3000:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ${configs}NginxRevProxy:/data
 
