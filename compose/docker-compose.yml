@@ -1,7 +1,6 @@
 ---
 version: '3.8'
 services:
-
   transmissionmovies:
     image: lscr.io/linuxserver/transmission:latest
     container_name: transmissionmovie
@@ -15,7 +14,6 @@ services:
     ports:
       - 9091:9091
     restart: unless-stopped
-
   transmissiontv:
     image: lscr.io/linuxserver/transmission:latest
     container_name: transmissiontv
@@ -30,7 +28,6 @@ services:
     ports:
       - 9092:9091
     restart: unless-stopped
-
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     environment:
@@ -44,7 +41,6 @@ services:
       - ${downloads}:/downloads
       - ${tvShows}:/downloads/Tv
     restart: unless-stopped
-
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     environment:
@@ -58,7 +54,6 @@ services:
       - ${downloads}:/downloads
       - ${movies}:/downloads/Movies
     restart: unless-stopped
-
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
@@ -70,15 +65,12 @@ services:
     volumes:
       - ${configs}Prowlarr:/config
     restart: unless-stopped
-
   watchtower:
     image: containrrr/watchtower:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
-
   ### needs to be mounted on separate macvlan network
-
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
@@ -88,24 +80,19 @@ services:
       - "8080:80/tcp"
     environment:
       TZ: 'Europe/Zurich'
-      WEBPASSWORD: 'set a secure password here or it will be random'
+      WEBPASSWORD: '${piholepasswd}'
     volumes:
       - ${configs}Pihole:/config
     restart: unless-stopped
-
     ### Nginx Proxy Manager
-
 networks:
-    dockervlan:
-      name: dockervlan
-      driver: macvlan
-      driver_opts:
-        parent: eth0
-      ipam:
-        config:
-          - subnet: "192.168.0.0/24"
-            ip_range: "192.168.0.200/30"
-            gateway: "192.168.0.1"
-    
-
-
+  dockervlan:
+    name: dockervlan
+    driver: macvlan
+    driver_opts:
+      parent: eth0
+    ipam:
+      config:
+        - subnet: '${vlansubnet}'
+          ip_range: '${vlaniprange}'
+          gateway: '${vlangateway}'
