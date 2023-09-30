@@ -103,7 +103,7 @@ networks:
     name: dockervlan
     driver: macvlan
     driver_opts:
-      parent: eth0
+      parent: ${vlaninterface}
     ipam:
       config:
         - subnet: '${vlansubnet}'
