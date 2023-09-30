@@ -1,28 +1,33 @@
 ---
 version: '3.8'
 services:
-
-  transmission:
+  transmissionmovies:
     image: lscr.io/linuxserver/transmission:latest
-    container_name: transmission
+    container_name: transmissionmovie
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Zurich
     volumes:
-      - ${configs}Transmission:/config
-      - ${downloads}:/downloads
-      - ${movies}:/downloads/Movies
+      - ${configs}Transmission-Movies:/config
+      - ${movies}:/downloads/complete
+    ports:
+      - '9091:9091'
+    restart: unless-stopped
+  transmissiontv:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmissiontv
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+    volumes:
+      - ${configs}Transmission-TV:/config
+      - ${downloads}:/downloads/complete
       - ${tvShows}:/downloads/Tv
     ports:
-      - 9091:9091
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.transmission.rule=Host(`transmission.localhost`)"
-    depends_on:
-      - traefik
+      - '9092:9091'
     restart: unless-stopped
-
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     environment:
@@ -30,19 +35,12 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     ports:
-      - 8989:8989
+      - '8989:8989'
     volumes:
       - ${configs}Sonarr:/config
       - ${downloads}:/downloads
-      - ${movies}:/downloads/Movies
       - ${tvShows}:/downloads/Tv
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
-
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     environment:
@@ -50,19 +48,12 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     ports:
-      - 7878:7878
+      - '7878:7878'
     volumes:
       - ${configs}Radarr:/config
       - ${downloads}:/downloads
       - ${movies}:/downloads/Movies
-      - ${tvShows}:/downloads/Tv
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
-
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     environment:
@@ -70,44 +61,52 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     ports:
-      - 9696:9696
+      - '9696:9696'
     volumes:
       - ${configs}Prowlarr:/config
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
-
   watchtower:
     image: containrrr/watchtower:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.watchtower.rule=Host(`watchtower.localhost`)"
-    depends_on:
-      - traefik
     restart: unless-stopped
-
-  traefik:
-    image: traefik:v2.10
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
     ports:
-      - 8080:8080
-      - 80:80
+      - '53:53/tcp'
+      - '53:53/udp'
+      - '8080:80'
+    environment:
+      TZ: 'Europe/Zurich'
+      WEBPASSWORD: '${piholepasswd}'
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
+      - ${configs}Pihole:/config
     restart: unless-stopped
-
-
-
-
-
-
+    networks:
+      dockervlan:
+        ipv4_address: '${piholeip}'
+  nginxrevproxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ${configs}/NginxRevProxy:/data
+      - ${configs}/NginxRevProxy/letsencrypt:/etc/letsencrypt
+    networks:
+      dockervlan:
+        ipv4_address: '${nginxrevproxyip}'
+networks:
+  dockervlan:
+    name: dockervlan
+    driver: macvlan
+    driver_opts:
+      parent: ${vlaninterface}
+    ipam:
+      config:
+        - subnet: '${vlansubnet}'
+          ip_range: '${vlaniprange}'
+          gateway: '${vlangateway}'

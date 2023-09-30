@@ -1,0 +1,100 @@
+---
+
+- name: Initial Server Setup
+  hosts: HomeServer
+  become: true
+
+  vars_prompt:
+    - name: sambapresent
+      prompt: "Do you own a Samba share ? [y/n] "
+
+  tasks:
+
+    - name: Prompt for Samba username
+      pause:
+        prompt: "Enter your smb username: "
+      when: sambapresent == "y"
+      register: smbusername
+
+    - name: Prompt for Samba password
+      pause:
+        prompt: "Enter your smb password: "
+      when: sambapresent == "y"
+      register: smbpassword
+
+    - name: Prompt for Samba Path
+      pause:
+        prompt: "Enter your smb Path (ip:/sharelocation): "
+      when: sambapresent == "y"
+      register: sharelocation
+
+    - name: Install CIFS-Utils for Samba Share
+      when: sambapresent == "y"
+      ansible.builtin.apt:
+        name: cifs-utils
+        state: present
+
+    # Mount Smb drive
+    - name: Mount SMB Share
+      when: sambapresent == "y"
+      ansible.posix.mount:
+        src: "{{ sharelocation }}"
+        path: /mnt/nfs
+        fstype: cifs
+        opts: "username={{ smbusername }},password={{ smbpassword }}"
+        state: mounted
+        boot: true
+
+    - name: Install Docker dependencies
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+          - pip
+          - python3
+        state: present
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name:
+          - containerd
+          - docker.io
+          - docker-compose
+        state: present
+
+    - name: Install PIP Docker
+      ansible.builtin.pip:
+        name:
+          - docker
+          - docker-compose
+          - jsondiff
+
+    # Create Group named Docker
+    - name: Ensure group "Docker" exists
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    # Append User to Docker Group
+    - name: Append User to Docker Group
+      ansible.builtin.user:
+        name: "{{ ansible_env.USER }}"
+        groups:
+          - docker
+        append: true
+
+    # Install Jellyfin Server
+    - name: Install Jellyfin
+      ansible.builtin.apt:
+        name:
+          - jellyfin
+        state: present
+
+    # Install Plex Media Server
+    - name: Install Plex
+      community.general.snap:
+        name:
+          - plexmediaserver
+        state: present
