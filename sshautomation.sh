@@ -37,3 +37,4 @@ printer "This Script will Create and Copy separate SSH Keys only for your homese
 readserverinfos
 sshkeyscreation
 copysshkeys
+clear
