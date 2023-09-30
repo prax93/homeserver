@@ -48,7 +48,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     ports:
-      - 7878:7878
+      - '7878:7878'
     volumes:
       - ${configs}Radarr:/config
       - ${downloads}:/downloads
@@ -61,7 +61,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     ports:
-      - 9696:9696
+      - '9696:9696'
     volumes:
       - ${configs}Prowlarr:/config
     restart: unless-stopped
