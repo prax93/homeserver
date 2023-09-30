@@ -70,7 +70,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
-  ### needs to be mounted on separate macvlan network
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
@@ -84,6 +83,9 @@ services:
     volumes:
       - ${configs}Pihole:/config
     restart: unless-stopped
+    networks:
+      dockervlan:
+        ipv4_address: '${piholeip}'
     ### Nginx Proxy Manager
 networks:
   dockervlan:
