@@ -74,9 +74,8 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "8080:80/tcp"
+      - 53:53
+      - 8080:80
     environment:
       TZ: 'Europe/Zurich'
       WEBPASSWORD: '${piholepasswd}'
@@ -86,7 +85,19 @@ services:
     networks:
       dockervlan:
         ipv4_address: '${piholeip}'
-    ### Nginx Proxy Manager
+  nginxrevproxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 81:81
+      - 443:443
+    volumes:
+      - ${configs}/NginxRevProxy:/data
+      - ${configs}/NginxRevProxy/letsencrypt:/etc/letsencrypt
+    networks:
+      dockervlan:
+        ipv4_address: '${nginxrevproxyip}'
 networks:
   dockervlan:
     name: dockervlan
