@@ -1,10 +1,12 @@
 #!/bin/bash
 clear
+
 GREEN='\033[0;32m'
 NC='\033[0m' 
 sshserveradress=""
+
 # Install openssh-client on Ansible Controller
-#sudo apt install openssh-client
+sudo apt install openssh-client
 
 # Printer for messages
 printer() {
@@ -20,6 +22,10 @@ function readserverinfos() {
     sshserveradress=$username"@"$ipadress
 }
 
+function instanansibleonnode() {
+    ssh sshserveradress 'sudo su && apt install ansible ansible-core ansible-galaxy -y'
+}
+
 # Function for SSH keys creation
 function sshkeyscreation() {
     ssh-keygen -t rsa -b 4096 -f ~/.ssh/homeserver
@@ -30,11 +36,14 @@ function copysshkeys(){
     ssh-copy-id -i ~/.ssh/homeserver "$sshserveradress"
 }
 
-
-
 # Script Entry Point
-printer "This Script will Create and Copy separate SSH Keys only for your homeserver"
+printer "This Script will Automate Ansible Installation and SSH Key management"
 readserverinfos
+clear
+printer "Installing Ansible on Node"
+instanansibleonnode
+clear
+printer "SSH Key Management"
 sshkeyscreation
 copysshkeys
 clear
