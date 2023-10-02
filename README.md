@@ -21,16 +21,12 @@ Coming Soon
 ## To do's
 - [x] Enter server credentials
 - [x] Ask for smb share
-- [x] Skip cifs install
-- [x] Skip mounting smb share
-- [-] Create Docker Group and append User to the Group
-- [-] Enter Samba Share Location (ip:/sharedFolder) when samba exists
-- [ ] Enter Mount point (/mnt/media)
-- [ ] Enter movies location (/mnt/media/Movies)
-- [ ] Enter TV-shows location (/mnt/media/TV)
-- [ ] Automatic path modification on ../compose/.env
+- [x] If smb share not existent: Skip cifs install
+- [x] If smb share not existent: Skip mounting smb share
+- [x] Create Docker Group and append User to the Group
+- [x] Enter Samba Share Location (ip:/sharedFolder) when samba exists
 
 ## Future Requests
 
-- [ ] Shell Script to install Ansible Client & Node
-- [ ] Shell Script to create SSH Keys and automatic Transfer
+- [x] Shell Script to install Ansible Client & Node
+- [x] Shell Script to create SSH Keys and automatic Transfer
