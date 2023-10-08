@@ -38,7 +38,7 @@
     - name: Mount SMB Share
       when: sambapresent == "y"
       ansible.posix.mount:
-        src: {{ sharelocation }}
+        src: "{{ sharelocation }}"
         path: /mnt/nfs
         fstype: cifs
         opts: "username={{ smbusername }},password={{ smbpassword }}"
