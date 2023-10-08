@@ -1,6 +1,7 @@
 ---
 version: '3.8'
-services:
+name: "mediaserver"
+services: 
   transmissionmovies:
     image: lscr.io/linuxserver/transmission:latest
     container_name: transmission
@@ -9,8 +10,10 @@ services:
       - PGID=1000
       - TZ=Europe/Zurich
     volumes:
-      - ${configs}Transmission:/config
-      - ${downloads}/complete:/downloads/complete
+      - ${configs}transmission:/config
+      # Volume Used for Automation (Sonarr / Radarr)
+      - ${downloads}/complete:/downloads/complete 
+      # Volume Used for Manual Control
       - ${movies}:/downloads/Movies
       - ${tvShows}:/downloads/Tv
     ports:
@@ -25,7 +28,7 @@ services:
     ports:
       - '8989:8989'
     volumes:
-      - ${configs}Sonarr:/config
+      - ${configs}sonarr:/config
       - ${downloads}:/downloads
       - ${tvShows}:/downloads/Tv
     restart: unless-stopped
@@ -38,7 +41,7 @@ services:
     ports:
       - '7878:7878'
     volumes:
-      - ${configs}Radarr:/config
+      - ${configs}radarr:/config
       - ${downloads}:/downloads
       - ${movies}:/downloads/Movies
     restart: unless-stopped
@@ -48,9 +51,9 @@ services:
       - LOG_LEVEL=debug
       - TZ=Europe/Zurich
     ports:
-      - '5055:5055'
+      - 5055:5055
     volumes:
-      - ${configs}Overseer:/app/config
+      - ${configs}overseer:/app/config
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
@@ -61,7 +64,7 @@ services:
     ports:
       - '9696:9696'
     volumes:
-      - ${configs}Prowlarr:/config
+      - ${configs}prowlarr:/config
     restart: unless-stopped
   watchtower:
     image: containrrr/watchtower:latest
@@ -79,7 +82,7 @@ services:
       TZ: 'Europe/Zurich'
       WEBPASSWORD: '${piholepasswd}'
     volumes:
-      - ${configs}Pihole:/config
+      - ${configs}pihole:/config
     restart: unless-stopped
     networks:
       dockervlan:
@@ -92,8 +95,8 @@ services:
       - '81:81'
       - '443:443'
     volumes:
-      - ${configs}/NginxRevProxy:/data
-      - ${configs}/NginxRevProxy/letsencrypt:/etc/letsencrypt
+      - ${configs}/nginxrevproxy:/data
+      - ${configs}/nginxrevproxy/letsencrypt:/etc/letsencrypt
     networks:
       dockervlan:
         ipv4_address: '${nginxrevproxyip}'
