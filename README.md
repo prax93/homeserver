@@ -12,13 +12,47 @@
 - SSH public Key transfered to Ansible Node
 - Ansible Installed
 
-# Flow Diagram
+# Flow Diagram (Not all Features not yet Implemented)
 ![Flow Diagram Ansible Playbook](./Documentation/Diagram.svg)
 
-# How To
-Coming Soon
+# How To (Under Construction)
+## Clone Repository
 
-## To do's
+```bash
+git clone https://github.com/prax93/homeserver.git
+
+```
+## Navigate to playbook Folder 
+
+```bash
+cd homeserver/playbook
+```
+
+## Create a Hosts file in ./playbook
+```bash
+nano hosts
+```
+
+ADD: 
+```yaml
+[HomeServer]
+192.168.0.100 // replace with your severs IP
+```
+"Ctrl + x" and follow with "y" to save the hosts file
+
+## Give Running Permissions for init.sh
+```bash
+cd ..
+sudo chmod +x init.sh
+```
+
+## Run Init Script
+```bash
+sh ./init.sh
+```
+
+
+# To do's
 - [x] Enter server credentials
 - [x] Ask for smb share
 <<<<<<< HEAD
@@ -31,11 +65,16 @@ Coming Soon
 - [x] Skip mounting smb share
 - [x] Create Docker Group and append User to the Group
 - [x] Enter Samba Share Location (ip:/sharedFolder) when samba exists
+<<<<<<< HEAD
 - [ ] Enter Mount point (/mnt/media)
 - [ ] Enter movies location (/mnt/media/Movies)
 - [ ] Enter TV-shows location (/mnt/media/TV)
 - [ ] Automatic path modification on ../compose/.env
 >>>>>>> 088376a (Commit for checkout)
+=======
+- [ ] Documentation & How to
+- [ ] Testing
+>>>>>>> e6e65e4 (Added fist draft of How to)
 
 ## Future Requests
 
