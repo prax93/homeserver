@@ -55,26 +55,14 @@ sh ./init.sh
 # To do's
 - [x] Enter server credentials
 - [x] Ask for smb share
-<<<<<<< HEAD
 - [x] If smb share not existent: Skip cifs install
 - [x] If smb share not existent: Skip mounting smb share
 - [x] Create Docker Group and append User to the Group
 - [x] Enter Samba Share Location (ip:/sharedFolder) when samba exists
-=======
-- [x] Skip cifs install
-- [x] Skip mounting smb share
-- [x] Create Docker Group and append User to the Group
-- [x] Enter Samba Share Location (ip:/sharedFolder) when samba exists
-<<<<<<< HEAD
-- [ ] Enter Mount point (/mnt/media)
-- [ ] Enter movies location (/mnt/media/Movies)
-- [ ] Enter TV-shows location (/mnt/media/TV)
-- [ ] Automatic path modification on ../compose/.env
->>>>>>> 088376a (Commit for checkout)
-=======
-- [ ] Documentation & How to
+- [ ] Variable Automation
 - [ ] Testing
->>>>>>> e6e65e4 (Added fist draft of How to)
+- [ ] Documentation
+- [ ] How to
 
 ## Future Requests
 
