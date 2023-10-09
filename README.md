@@ -28,17 +28,15 @@ git clone https://github.com/prax93/homeserver.git
 cd homeserver/playbook
 ```
 
-## Create a Hosts file in ./playbook
-```bash
-nano hosts
-```
-
-ADD: 
+## Edit hosts.yml file in ./playbook
 ```yaml
 [HomeServer]
-192.168.0.100 // replace with your severs IP
+192.168.0.100 #Replace with your Servers IP
+
+[HomeServer:vars]
+ansible_user=ubuntu #Replace with your Servers Username
 ```
-"Ctrl + x" and follow with "y" to save the hosts file
+
 
 ## Give Running Permissions for init.sh
 ```bash
