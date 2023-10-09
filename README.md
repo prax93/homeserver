@@ -12,7 +12,7 @@
 - SSH public Key transfered to Ansible Node
 - Ansible Installed
 
-# Flow Diagram (Not all Features not yet Implemented)
+# Flow Diagram (Not all Features yet Implemented)
 ![Flow Diagram Ansible Playbook](./Documentation/Diagram.svg)
 
 # How To (Under Construction)
