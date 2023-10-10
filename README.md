@@ -72,4 +72,4 @@ sh ./init.sh
 
 - [x] Shell Script to install Ansible Client & Node
 - [x] Shell Script to create SSH Keys and automatic Transfer
->>>>>>> 805e8e20eda8cb598ca1dbfc0c224a5fccc99297
+
