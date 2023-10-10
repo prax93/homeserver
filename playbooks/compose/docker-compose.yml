@@ -1,0 +1,113 @@
+---
+version: '3.8'
+name: "mediaserver"
+services: 
+  transmissionmovies:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+    volumes:
+      - ${configs}transmission:/config
+      # Volume Used for Automation (Sonarr / Radarr)
+      - ${downloads}/complete:/downloads/complete 
+      # Volume Used for Manual Control
+      - ${movies}:/downloads/Movies
+      - ${tvShows}:/downloads/Tv
+    ports:
+      - '9091:9091'
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    ports:
+      - '8989:8989'
+    volumes:
+      - ${configs}sonarr:/config
+      - ${downloads}:/downloads
+      - ${tvShows}:/downloads/Tv
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    ports:
+      - '7878:7878'
+    volumes:
+      - ${configs}radarr:/config
+      - ${downloads}:/downloads
+      - ${movies}:/downloads/Movies
+    restart: unless-stopped
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Europe/Zurich
+    ports:
+      - 5055:5055
+    volumes:
+      - ${configs}overseer:/app/config
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    ports:
+      - '9696:9696'
+    volumes:
+      - ${configs}prowlarr:/config
+    restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - '53:53/tcp'
+      - '53:53/udp'
+      - '8080:80'
+    environment:
+      TZ: 'Europe/Zurich'
+      WEBPASSWORD: '${piholepasswd}'
+    volumes:
+      - ${configs}pihole:/config
+    restart: unless-stopped
+    networks:
+      dockervlan:
+        ipv4_address: '${piholeip}'
+  nginxrevproxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ${configs}/nginxrevproxy:/data
+      - ${configs}/nginxrevproxy/letsencrypt:/etc/letsencrypt
+    networks:
+      dockervlan:
+        ipv4_address: '${nginxrevproxyip}'
+networks:
+  dockervlan:
+    name: dockervlan
+    driver: macvlan
+    driver_opts:
+      parent: ${vlaninterface}
+    ipam:
+      config:
+        - subnet: '${vlansubnet}'
+          ip_range: '${vlaniprange}'
+          gateway: '${vlangateway}'
