@@ -51,7 +51,7 @@ services:
       - LOG_LEVEL=debug
       - TZ=Europe/Zurich
     ports:
-      - 5055:5055
+      - '5055:5055'
     volumes:
       - ${configs}overseer:/app/config
     restart: unless-stopped
