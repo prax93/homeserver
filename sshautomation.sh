@@ -22,8 +22,11 @@ function readserverinfos() {
     sshserveradress=$username"@"$ipadress
 }
 
-function instanansibleonnode() {
+function installansibleonnode() {
     ssh sshserveradress 'sudo su && apt install ansible ansible-core ansible-galaxy -y'
+    echo $(apt list --installed | grep ansible) is Installed
+    echo $(apt list --installed | grep ansible-core) is Installed
+    echo $(apt list --installed | grep ansible-galaxy) is Installed
 }
 
 # Function for SSH keys creation
@@ -40,10 +43,13 @@ function copysshkeys(){
 printer "This Script will Automate Ansible Installation and SSH Key management"
 readserverinfos
 clear
-printer "Installing Ansible on Node"
-instanansibleonnode
-clear
 printer "SSH Key Management"
 sshkeyscreation
 copysshkeys
+sleep 5
 clear
+printer "Installing Ansible on Node"
+sleep 5
+installansibleonnode
+clear
+
