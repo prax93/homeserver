@@ -7,9 +7,9 @@
     - name: Copy file with owner and permissions
       ansible.builtin.copy:
         src: ./compose
-        dest: /var/compose
-        owner: ubuntu
-        group: ubuntu
+        dest: /var
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
         mode: '0775'
     - name: Start Containers
       community.docker.docker_compose:

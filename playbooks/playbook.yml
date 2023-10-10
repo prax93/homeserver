@@ -7,7 +7,7 @@
   vars_prompt:
     - name: sambapresent
       prompt: "Do you own a Samba share ? [y/n] "
-
+  
   tasks:
 
     - name: Prompt for Samba username
@@ -28,6 +28,12 @@
       when: sambapresent == "y"
       register: sharelocation
 
+    - name: Prompt for MountPoint
+      pause:
+        prompt: "Enter your smb share mountpoint (/mnt/smb/): "
+      when: sambapresent == "y"
+      register: mountPoint
+
     - name: Install CIFS-Utils for Samba Share
       when: sambapresent == "y"
       ansible.builtin.apt:
@@ -39,7 +45,7 @@
       when: sambapresent == "y"
       ansible.posix.mount:
         src: "{{ sharelocation }}"
-        path: /mnt/nfs
+        path: "{{ mountPoint }}"
         fstype: cifs
         opts: "username={{ smbusername }},password={{ smbpassword }}"
         state: mounted

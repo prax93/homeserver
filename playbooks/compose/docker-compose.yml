@@ -2,7 +2,7 @@
 version: '3.8'
 name: "mediaserver"
 services: 
-  transmissionmovies:
+  transmission:
     image: lscr.io/linuxserver/transmission:latest
     container_name: transmission
     environment:
