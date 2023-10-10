@@ -4,11 +4,16 @@
   hosts: HomeServer
   become: true
 
-  vars_prompt:
+vars_prompt:
     - name: sambapresent
       prompt: "Do you own a Samba share ? [y/n] "
+      private: false
   
   tasks:
+    - name: Prompt for Samba username
+      pause:
+        prompt: "Do you own a Samba share ? [y/n] " 
+      register: sambapresent
 
     - name: Prompt for Samba username
       pause:
