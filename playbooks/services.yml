@@ -16,4 +16,3 @@
         project_src: /var/compose
         files:
           - docker-compose.yml
-
