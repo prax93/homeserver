@@ -12,10 +12,10 @@ services:
     volumes:
       - ${configs}transmission:/config
       # Volume Used for Automation (Sonarr / Radarr)
-      - ${downloads}/complete:/downloads/complete 
+      - ${downloads}:/downloads/complete 
       # Volume Used for Manual Control
-      - ${movies}:/downloads/Movies
-      - ${tvShows}:/downloads/Tv
+      - ${movies}:/Movies
+      - ${tvShows}:/Tv
     ports:
       - '9091:9091'
     restart: unless-stopped
@@ -29,6 +29,7 @@ services:
       - '8989:8989'
     volumes:
       - ${configs}sonarr:/config
+      # Manual Mapping needed in Sonarr when appending Torrent Client
       - ${downloads}:/downloads
       - ${tvShows}:/downloads/Tv
     restart: unless-stopped
