@@ -10,7 +10,7 @@ services:
       - PGID=1000
       - TZ=Europe/Zurich
     volumes:
-      - ${configs}transmission:/config
+      - ${configs}/transmission:/config
       # Volume Used for Automation (Sonarr / Radarr)
       - ${downloads}:/downloads/complete 
       # Volume Used for Manual Control
@@ -28,8 +28,8 @@ services:
     ports:
       - '8989:8989'
     volumes:
-      - ${configs}sonarr:/config
-      # Manual Mapping needed in Sonarr when appending Torrent Client
+      - ${configs}/sonarr:/config
+      # Manual Folder Mapping /downloads = /downloads/complete needed in Sonarr when appending Torrent Client
       - ${downloads}:/downloads
       - ${tvShows}:/downloads/Tv
     restart: unless-stopped
@@ -42,7 +42,7 @@ services:
     ports:
       - '7878:7878'
     volumes:
-      - ${configs}radarr:/config
+      - ${configs}/radarr:/config
       - ${downloads}:/downloads
       - ${movies}:/downloads/Movies
     restart: unless-stopped
@@ -54,7 +54,7 @@ services:
     ports:
       - '5055:5055'
     volumes:
-      - ${configs}overseer:/app/config
+      - ${configs}/overseer:/app/config
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
@@ -65,42 +65,40 @@ services:
     ports:
       - '9696:9696'
     volumes:
-      - ${configs}prowlarr:/config
+      - ${configs}/prowlarr:/config
     restart: unless-stopped
-  watchtower:
-    image: containrrr/watchtower:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome
     ports:
       - '53:53/tcp'
       - '53:53/udp'
-      - '8080:80'
-    environment:
-      TZ: 'Europe/Zurich'
-      WEBPASSWORD: '${piholepasswd}'
+      - '3000:3000'
     volumes:
-      - ${configs}pihole:/config
+      - ${configs}/adguardhome:/opt/adguardhome/work
+      - ${configs}/adguardhome:/opt/adguardhome/conf
     restart: unless-stopped
-    networks:
-      dockervlan:
-        ipv4_address: '${piholeip}'
-  nginxrevproxy:
+  dozzle:
+    container_name dozzle
+    image: amir20/dozzle:latest
+    ports:
+      - '8888:8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+  proxymanager:
     image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
     ports:
       - '80:80'
       - '81:81'
       - '443:443'
     volumes:
-      - ${configs}/nginxrevproxy:/data
-      - ${configs}/nginxrevproxy/letsencrypt:/etc/letsencrypt
+      - ${configs}//nginxrevproxy:/data
+      - ${configs}//nginxrevproxy/letsencrypt:/etc/letsencrypt
+    restart: unless-stopped
     networks:
       dockervlan:
-        ipv4_address: '${nginxrevproxyip}'
+        ipv4_address: '${proxymanager}'
 networks:
   dockervlan:
     name: dockervlan
