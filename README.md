@@ -57,19 +57,8 @@ sh ./init.sh
 - [x] If smb share not existent: Skip mounting smb share
 - [x] Create Docker Group and append User to the Group
 - [x] Enter Samba Share Location (ip:/sharedFolder) when samba exists
-- [ ] Variable Automation
+- [x] Variable Automation
 - [ ] Testing
 - [ ] Documentation
 - [ ] How to
-
-## Future Requests
-
-- [x] Shell Script to install Ansible Client & Node
-- [x] Shell Script to create SSH Keys and automatic Transfer
-- [ ] How to
-
-## Future Requests
-
-- [x] Shell Script to install Ansible Client & Node
-- [x] Shell Script to create SSH Keys and automatic Transfer
 
