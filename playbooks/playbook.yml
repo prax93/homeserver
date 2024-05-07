@@ -39,6 +39,12 @@
       when: sambapresent == "y"
       register: mountPoint
 
+    - name: Prompt for Media-Location
+      pause:
+        prompt: "Enter your media Location (/mnt/smb/): "
+      when: sambapresent == "n"
+      register: mountPoint
+
     - name: Register Env Variable mountpoint
       environment:
         MOUNTPOINT: "{{ mountPoint.user_input }}"
