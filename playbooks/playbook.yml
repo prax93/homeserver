@@ -39,6 +39,10 @@
       when: sambapresent == "y"
       register: mountPoint
 
+    - name: Register Env Variable mountpoint
+      environment:
+        MOUNTPOINT: "{{ mountPoint.user_input }}"
+    
     - name: Install CIFS-Utils for Samba Share
       when: sambapresent == "y"
       ansible.builtin.apt:
