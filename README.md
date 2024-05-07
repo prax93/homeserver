@@ -1,27 +1,36 @@
-# Homeserver Automation with Ansible and Docker Documentation
+# Homeserver Automation with Ansible and Docker-Compose 
+
+# What will be automated
+- Installing Dependencies on Client / Server for now only apt is supported
+- Creating and Exchaning SSH Keys
+- Mounting SMB Share and create the necessary fstab entry
+- Install Docker and give the necessary permissions
+- Install Plex Media Server from snap repository
+- Install Jellyfin from snap repository
+- Copy and Spin up Docker Containers
+
+## What Containers will be started
+- transmission-client
+- sonarr
+- overseerr
+- prowlarr
+- adguardhome
+- dozzle
+- nginx-proxy-manager
+
 
 # Requirements
 
-## Ansible Node
+## Server Requirements
 - Static Ip Configuration (LAN)
-- SMB Share (optional)
-- Running Open SSH Service with configured public and private Key
-- Ansible Installed
+- SMB Share (recommended)
 
-## Ansible Client
-- SSH public Key transfered to Ansible Node
-- Ansible Installed
-
-# Flow Diagram (Not all Features not yet Implemented)
-![Flow Diagram Ansible Playbook](./Documentation/Diagram.svg)
-
-# How To (Under Construction)
 ## Clone Repository
 
 ```bash
 git clone https://github.com/prax93/homeserver.git
-
 ```
+
 ## Navigate to playbook Folder 
 
 ```bash
@@ -36,7 +45,6 @@ cd homeserver/playbook
 [HomeServer:vars]
 ansible_user=ubuntu #Replace with your Servers Username
 ```
-
 
 ## Give Running Permissions for init.sh
 ```bash
@@ -60,5 +68,4 @@ sh ./init.sh
 - [x] Variable Automation
 - [ ] Testing
 - [ ] Documentation
-- [ ] How to
 
