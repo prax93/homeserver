@@ -1,6 +1,4 @@
 ---
-version: '3.8'
-name: "mediaserver"
 services: 
   transmission:
     image: lscr.io/linuxserver/transmission:latest
@@ -66,26 +64,13 @@ services:
       - ${configs}/adguardhome:/opt/adguardhome/conf
     restart: unless-stopped
   dozzle:
-    container_name dozzle
+    container_name: dozzle
     image: amir20/dozzle:latest
     ports:
       - '8888:8080'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
-  proxymanager:
-    image: 'jc21/nginx-proxy-manager:latest'
-    ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - ${configs}/nginxrevproxy:/data
-      - ${configs}/nginxrevproxy/letsencrypt:/etc/letsencrypt
-    restart: unless-stopped
-    networks:
-      dockervlan:
-        ipv4_address: '${proxymanager}'
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
@@ -98,14 +83,3 @@ services:
       - ${configs}/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: unless-stopped
-networks:
-  dockervlan:
-    name: dockervlan
-    driver: macvlan
-    driver_opts:
-      parent: ${vlaninterface}
-    ipam:
-      config:
-        - subnet: '${vlansubnet}'
-          ip_range: '${vlaniprange}'
-          gateway: '${vlangateway}'
