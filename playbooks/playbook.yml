@@ -2,7 +2,6 @@
 
 - name: Initial Server Setup
   hosts: HomeServer
-  become: true
 
   vars_prompt:
     - name: sambapresent
@@ -10,11 +9,6 @@
       private: false
   
   tasks:
-    - name: Prompt for Samba username
-      pause:
-        prompt: "Do you own a Samba share ? [y/n] " 
-      register: sambapresent
-
     - name: Prompt for Samba username
       pause:
         prompt: "Enter your smb username: "
@@ -37,17 +31,17 @@
       pause:
         prompt: "Enter your smb share mountpoint (/mnt/smb/): "
       when: sambapresent == "y"
-      register: mountPoint
+      register: smb_mount_point
 
     - name: Prompt for Media-Location
       pause:
         prompt: "Enter your media Location (/mnt/smb/): "
       when: sambapresent == "n"
-      register: mountPoint
+      register: media_location
 
     - name: Register Env Variable mountpoint
-      environment:
-        MOUNTPOINT: "{{ mountPoint.user_input }}"
+      set_fact:
+        MOUNTPOINT: "{{ smb_mount_point.user_input if sambapresent == 'y' else media_location.user_input }}"
     
     - name: Install CIFS-Utils for Samba Share
       when: sambapresent == "y"
@@ -59,10 +53,10 @@
     - name: Mount SMB Share
       when: sambapresent == "y"
       ansible.posix.mount:
-        src: "{{ sharelocation }}"
-        path: "{{ mountPoint }}"
+        src: "{{ sharelocation.user_input }}"
+        path: "{{ MOUNTPOINT }}"
         fstype: cifs
-        opts: "username={{ smbusername }},password={{ smbpassword }}"
+        opts: "username={{ smbusername.user_input }},password={{ smbpassword.user_input }}"
         state: mounted
         boot: true
 
