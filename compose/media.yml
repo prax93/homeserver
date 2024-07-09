@@ -1,4 +1,5 @@
 ---
+version: '3.8'
 services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -11,7 +12,6 @@ services:
       - 7878:7878
     volumes:
       - ${configs}/radarr:/config
-      # Manual Folder Mapping /downloads = /downloads/complete needed in Radarr when appending Torrent Client
       - ${downloads}:/downloads
       - ${movies}:/movies
   sonarr:
@@ -25,7 +25,6 @@ services:
       - 8989:8989
     volumes:
       - ${configs}/sonarr:/config
-      # Manual Folder Mapping /downloads = /downloads/complete needed in Sonarr when appending Torrent Client
       - ${downloads}:/downloads
       - ${tvShows}:/tv
     restart: unless-stopped
