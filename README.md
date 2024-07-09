@@ -1,6 +1,6 @@
 # Homeserver Automation with Ansible and Docker-Compose 
 
-# What will be automated
+## What will be automated
 - Installing Dependencies on Client / Server for now only apt is supported
 - Creating and Exchaning SSH Keys
 - Mounting SMB Share and create the necessary fstab entry
@@ -11,21 +11,11 @@
 
 ## What Containers will be started
 
-### Coming Soon Containers
-- [ ] Prometheus
-- [ ] APM Tool
-- [ ] Grafana
-- [ ] Postgres or Mysql
-- [ ] Usenet Client
-- [ ] Ntfy
-- [ ] 
-
-
 ### Download Clients
 - transmission-client
 - jdwonloader2
 
-## Media Automation
+### Media Automation
 - sonarr
 - radarr
 - overseerr
@@ -38,9 +28,16 @@
 ### Monitoring
 - dozzle
 
-# Requirements
+### Coming Soon Containers
+- [ ] Prometheus
+- [ ] APM Tool
+- [ ] Grafana
+- [ ] Postgres or Mysql
+- [ ] Usenet Client
+- [ ] Ntfy
 
-## Server Requirements
+# Installation
+## Requirements
 - Static Ip Configuration (LAN)
 - SMB Share (recommended)
 
