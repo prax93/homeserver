@@ -38,6 +38,7 @@
 
 # Installation
 ## Requirements
+- Openssh up and running on Homeserver Node
 - Static Ip Configuration (LAN)
 - SMB Share (recommended)
 
