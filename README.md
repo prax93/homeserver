@@ -7,17 +7,36 @@
 - Install Docker and give the necessary permissions
 - Install Plex Media Server from snap repository
 - Install Jellyfin from snap repository
-- Copy and Spin up Docker Containers
+- Copy compose files and Spin up Docker Containers
 
 ## What Containers will be started
+
+### Coming Soon Containers
+- [ ] Prometheus
+- [ ] APM Tool
+- [ ] Grafana
+- [ ] Postgres or Mysql
+- [ ] Usenet Client
+- [ ] Ntfy
+- [ ] 
+
+
+### Download Clients
 - transmission-client
+- jdwonloader2
+
+## Media Automation
 - sonarr
+- radarr
 - overseerr
 - prowlarr
-- adguardhome
-- dozzle
-- nginx-proxy-manager
 
+### Network Containers
+- adguardhome
+- wireguard vpn (wgeasy)
+
+### Monitoring
+- dozzle
 
 # Requirements
 
@@ -67,5 +86,6 @@ sh ./init.sh
 - [x] Enter Samba Share Location (ip:/sharedFolder) when samba exists
 - [x] Variable Automation
 - [ ] Testing
-- [ ] Documentation
+- [x] Documentation
+- [ ] Finalize Playbooks
 
