@@ -34,6 +34,12 @@
       when: sambapresent == "y"
       register: smb_mount_point
     
+    - name: Prompt for Media Location
+      pause:
+        prompt: "Enter your Media Location (ex: /home/media): "
+      when: sambapresent == "n"
+      register: smb_mount_point
+    
     - name: Register Env Variable MOUNTPOINT
       set_fact:
         MOUNTPOINT: "{{ smb_mount_point.user_input if sambapresent == 'y' else media_location.user_input }}"
