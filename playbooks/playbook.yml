@@ -2,6 +2,7 @@
 
 - name: Initial Server Setup
   hosts: HomeServer
+  become: yes
 
   vars_prompt:
     - name: sambapresent
@@ -23,7 +24,7 @@
 
     - name: Prompt for Samba Path
       pause:
-        prompt: "Enter your smb Path (ip:/sharelocation): "
+        prompt: "Enter your smb Path (//ip/shared-volume): "
       when: sambapresent == "y"
       register: sharelocation
 
@@ -32,16 +33,17 @@
         prompt: "Enter your smb share mountpoint (/mnt/smb/): "
       when: sambapresent == "y"
       register: smb_mount_point
-
-    - name: Prompt for Media-Location
-      pause:
-        prompt: "Enter your media Location (/mnt/smb/): "
-      when: sambapresent == "n"
-      register: media_location
-
-    - name: Register Env Variable mountpoint
+    
+    - name: Register Env Variable MOUNTPOINT
       set_fact:
         MOUNTPOINT: "{{ smb_mount_point.user_input if sambapresent == 'y' else media_location.user_input }}"
+
+    - name: Ensure MOUNTPOINT is set as an environment variable
+      lineinfile:
+        path: /home/{{ ansible_user }}/.bashrc
+        line: 'export MOUNTPOINT="{{ MOUNTPOINT }}"'
+        create: yes
+      when: MOUNTPOINT is defined
     
     - name: Install CIFS-Utils for Samba Share
       when: sambapresent == "y"
@@ -78,13 +80,6 @@
           - docker.io
           - docker-compose
         state: present
-
-    - name: Install PIP Docker
-      ansible.builtin.pip:
-        name:
-          - docker
-          - docker-compose
-          - jsondiff
 
     # Create Group named Docker
     - name: Ensure group "Docker" exists
