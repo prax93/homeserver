@@ -5,8 +5,8 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - PUID=0
-      - GID=0
+      - PUID=1000
+      - PGID=1000
       - TZ=Etc/UTC
     ports:
       - 7878:7878
@@ -18,8 +18,8 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=0
-      - GID=0
+      - PUID=1000
+      - PGID=1000
       - TZ=Etc/UTC
     ports:
       - 8989:8989
