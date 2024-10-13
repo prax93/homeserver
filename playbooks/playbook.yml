@@ -106,6 +106,7 @@
       ansible.builtin.apt:
         name:
           - jellyfin
+          - jellyfin-ffmpeg6
         state: present
 
     # Install Plex Media Server
