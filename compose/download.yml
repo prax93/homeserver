@@ -21,3 +21,4 @@ services:
     volumes:
       - ${configs}/jdownloader:/config
       - ${downloads}/complete:/output
+  ## Qbittorrent => new Feature 
