@@ -3,6 +3,7 @@ clear
 
 GREEN='\033[0;32m'
 NC='\033[0m' 
+# Will be appended as soon user enters Location and User
 sshserveradress=""
 
 # Install openssh-client on Ansible Controller

@@ -1,5 +1,4 @@
 #! /bin/bash
-
 ./sshautomation.sh
 
 RED='\033[0;31m'
