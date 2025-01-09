@@ -2,7 +2,7 @@
 
 - name: Initial Server Setup
   hosts: HomeServer
-  become: yes
+  become: true
 
   vars_prompt:
     - name: sambapresent
