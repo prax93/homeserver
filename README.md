@@ -1,5 +1,8 @@
 # Homeserver Automation with Ansible and Docker-Compose 
-## Table of Contents
+
+## Note on Usage
+This project is intended for personal use only and does not support or condone piracy. Please ensure that all media and content used comply with applicable copyright laws.
+
 - [What will be automated](#what-will-be-automated)
 - [What Containers will be started](#what-containers-will-be-started)
     - [Download Clients](#download-clients)
