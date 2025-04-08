@@ -91,6 +91,6 @@ chmod ./init.sh
 - .env file correctly Setup see [here](#create-and-edit-composeenv-file)
 
 ```sh
-chmod ./dockeronly.sh
-./dockeronly.sh
+chmod ./dockeronly.sh 
+./dockeronly.sh start | stop | update
 ```
