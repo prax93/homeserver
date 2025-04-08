@@ -1,4 +1,21 @@
 # Homeserver Automation with Ansible and Docker-Compose 
+## Table of Contents
+- [What will be automated](#what-will-be-automated)
+- [What Containers will be started](#what-containers-will-be-started)
+    - [Download Clients](#download-clients)
+    - [Media Automation](#media-automation)
+    - [Network Containers](#network-containers)
+    - [Monitoring](#monitoring)
+- [Initial Steps](#initial-steps)
+    - [Clone Repository](#clone-repository)
+    - [Create and edit ./compose/.env file](#create-and-edit-compose-env-file)
+- [Installation](#installation)
+    - [Option 1: Complete Installation](#option-1-complete-installation)
+        - [Requirements](#requirements)
+        - [Complete Installation](#complete-installation)
+    - [Option 2: Docker Only Installation](#option-2-docker-only-installation)
+        - [Requirements](#requirements-1)
+        - [Docker Only Installation](#docker-only-installation)
 
 ## What will be automated
 - Installing Dependencies on Client / Server for now only apt is supported
@@ -28,22 +45,19 @@
 ### Monitoring
 - dozzle
 
-# Initial Steps
-## Clone Repository
 
+## Clone Repository
 ```bash
 git clone https://github.com/prax93/homeserver.git
 cd homeserver
-
 ```
 
-### Create and edit ./compose/.env file
-
+## Create and edit ./compose/.env file
 ```bash
 nano ./compose/.env
 ```
 
-```bash
+```yaml
 # Docker Configs
 configs=~
 
@@ -58,38 +72,47 @@ publicIp=<Enter Public IP here>
 passwordHash=<wireguard password Hash here>
 ```
 
-
 # Installation
+
 ## Option 1: [Complete Instalation](#complete-installation)
+- Creates SSH Keys
+- Installs Dependencies with Ansible
+- Starts all Containers
 
-    - Creates SSH Keys
-    - Installs Dependencies with Ansible
-    - Starts all Containers
-
-## Option [Docker Only Installation](#complete-installation)
-
-    - Starts all Containers
-
----
-
-### Complete Installation
-#### Requirements
+### Requirements
+- [Initial Steps](#initial-steps)
 - Existing SMB Share 
 - Download / Movie / TV  Location predefined on Samba Share
 - Openssh Server up and running on Homeserver
 - Static Ip Configuration for Homeserver
 - Openssh Client up and running on Client
 
+### [Ansible Configuration](./playbooks/hosts.yml)
+Append the Server Informations Accordingly
+```yaml
+[HomeServer]
+192.168.0.100
+
+[HomeServer:vars]
+ansible_user=ubuntu
+```
+
+
+### Complete Installation
 ```sh
 chmod ./init.sh
 ```
----
 
-### Docker Only Installation
-#### Requirements
+## Option 2: [Docker Only Installation](#docker-only-installation)
+
+- Starts all Containers
+
+### Requirements
 - Docker Compose V2 Installed 
 - Download / Movie / TV  Location predefined
 - .env file correctly Setup see [here](#create-and-edit-composeenv-file)
+
+### Docker Only Installation
 
 ```sh
 chmod ./dockeronly.sh 
