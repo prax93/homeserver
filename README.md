@@ -51,6 +51,7 @@
 git clone https://github.com/prax93/homeserver.git
 cd homeserver
 ```
+# Installation
 
 ## Create and edit ./compose/.env file
 ```bash
@@ -72,17 +73,13 @@ publicIp=<Enter Public IP here>
 passwordHash=<wireguard password Hash here>
 ```
 
-# Installation
-
 ## Option 1: [Complete Instalation](#complete-installation)
 - Creates SSH Keys
 - Installs Dependencies with Ansible
 - Starts all Containers
 
 ### Requirements
-- [Initial Steps](#initial-steps)
-- Existing SMB Share 
-- Download / Movie / TV  Location predefined on Samba Share
+- Download / Movie / TV  Location predefined
 - Openssh Server up and running on Homeserver
 - Static Ip Configuration for Homeserver
 - Openssh Client up and running on Client
@@ -97,10 +94,13 @@ Append the Server Informations Accordingly
 ansible_user=ubuntu
 ```
 
-
 ### Complete Installation
 ```sh
-chmod ./init.sh
+chmod +x ./sshautomation.sh
+chmod +x ./init.sh
+
+./sshautomations.sh && ./init.sh
+
 ```
 
 ## Option 2: [Docker Only Installation](#docker-only-installation)
