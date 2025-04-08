@@ -28,62 +28,69 @@
 ### Monitoring
 - dozzle
 
-### Coming Soon Containers
-- [ ] Prometheus
-- [ ] APM Tool
-- [ ] Grafana
-- [ ] Postgres or Mysql
-- [ ] Usenet Client
-- [ ] Ntfy
-
-# Installation
-## Requirements
-- Openssh up and running on Homeserver Node
-- Static Ip Configuration (LAN)
-- SMB Share (recommended)
-
+# Initial Steps
 ## Clone Repository
 
 ```bash
 git clone https://github.com/prax93/homeserver.git
+cd homeserver
+
 ```
 
-## Navigate to playbook Folder 
+### Create and edit ./compose/.env file
 
 ```bash
-cd homeserver/playbook
+nano ./compose/.env
 ```
 
-## Edit hosts.yml file in ./playbook
-```yaml
-[HomeServer]
-192.168.0.100 #Replace with your Servers IP
-
-[HomeServer:vars]
-ansible_user=ubuntu #Replace with your Servers Username
-```
-
-## Give Running Permissions for init.sh
 ```bash
-cd ..
-sudo chmod +x init.sh
+# Docker Configs
+configs=~
+
+# Media Location
+movies=<Enter Movies Location here>
+tvShows=<Enter TV Location here>
+downloads=<Enter Downloads Location here>
+
+# Network 
+publicIp=<Enter Public IP here>
+# Replace $ with $$
+passwordHash=<wireguard password Hash here>
 ```
 
-## Run Init Script
-```bash
-sh ./init.sh
+
+# Installation
+## Option 1: [Complete Instalation](#complete-installation)
+
+    - Creates SSH Keys
+    - Installs Dependencies with Ansible
+    - Starts all Containers
+
+## Option [Docker Only Installation](#complete-installation)
+
+    - Starts all Containers
+
+
+### Complete Installation
+#### Requirements
+- Existing SMB Share 
+- Download / Movie / TV  Location predefined on Samba Share
+- Openssh Server up and running on Homeserver
+- Static Ip Configuration for Homeserver
+- Openssh Client up and running on Client
+
+```sh
+chmod ./init.sh
 ```
 
 
-# To do's
-- [x] Enter server credentials
-- [x] Ask for smb share
-- [x] If smb share not existent: Skip cifs install
-- [x] If smb share not existent: Skip mounting smb share
-- [x] Create Docker Group and append User to the Group
-- [x] Enter Samba Share Location (ip:/sharedFolder) when samba exists
-- [x] Variable Automation
-- [ ] Testing
-- [x] Documentation
-- [ ] Finalize Playbooks
+### Docker Only Installation
+#### Requirements
+- Docker Compose V2 Installed 
+- Download / Movie / TV  Location predefined
+- .env file correctly Setup see [here](#create-and-edit-composeenv-file)
 
+```sh
+chmod ./dockeronly.sh
+./dockeronly.sh
+```
