@@ -24,6 +24,7 @@ printer() {
 function readserverinfos() {
     read -r -p "What is your Servers IP: " ipadress
     read -r -p "What is your username on the Server: " username
+    read -r -p "Set Key name: " keyname
     sshserveradress=$username"@"$ipadress
 }
 
@@ -36,12 +37,12 @@ function installansibleonnode() {
 
 # Function for SSH keys creation
 function sshkeyscreation() {
-    ssh-keygen -t rsa -b 4096 -f ~/.ssh/homeserver
+    ssh-keygen -t rsa -b 4096 -f ~/.ssh/$keyname
 }
 
 # Function for SSH keys Copying
 function copysshkeys(){
-    ssh-copy-id -i ~/.ssh/homeserver "$sshserveradress"
+    ssh-copy-id -i ~/.ssh/$keyname "$sshserveradress"
 }
 
 # Script Entry Point
