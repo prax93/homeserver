@@ -70,6 +70,7 @@ passwordHash=<wireguard password Hash here>
 
     - Starts all Containers
 
+---
 
 ### Complete Installation
 #### Requirements
@@ -82,7 +83,7 @@ passwordHash=<wireguard password Hash here>
 ```sh
 chmod ./init.sh
 ```
-
+---
 
 ### Docker Only Installation
 #### Requirements
