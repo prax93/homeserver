@@ -33,7 +33,7 @@ services:
       - PORT=51821
       - WG_PORT=51820
     volumes:
-      - ${configs}/wg-easy:/etc/wireguard
+      - ${configs}/wireguard:/etc/wireguard
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
