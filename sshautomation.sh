@@ -52,10 +52,10 @@ clear
 printer "SSH Key Management"
 sshkeyscreation
 copysshkeys
-sleep 5
+sleep 2
 clear
 printer "Installing Ansible on Node"
-sleep 5
+sleep 2
 installansibleonnode
 clear
 
