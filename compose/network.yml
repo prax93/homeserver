@@ -1,4 +1,5 @@
 ---
+project: network-stack
 services: 
   adguardhome:
     image: adguard/adguardhome

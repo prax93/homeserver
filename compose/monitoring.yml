@@ -1,4 +1,5 @@
 ---
+project: monitoring-stack
 services: 
   dozzle:
     container_name: dozzle
