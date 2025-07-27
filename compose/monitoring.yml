@@ -26,7 +26,7 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
     networks:
-      - monitoring
+      - monitoringa
   c-advisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: c-advisor
