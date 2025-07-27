@@ -15,6 +15,7 @@
       community.docker.docker_compose:
         project_src: /var/compose
         files:
+          - admin.yml
           - download.yml
           - media.yml
           - monitoring.yml

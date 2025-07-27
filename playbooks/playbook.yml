@@ -105,8 +105,10 @@
     - name: Install Jellyfin
       ansible.builtin.apt:
         name:
-          - jellyfin
-          - jellyfin-ffmpeg6
+          - jellyfin-media-player
+          - jellyfin-ffmpeg7
+          - jellyfin-server
+          - jellyfin-web
         state: present
 
     # Install Plex Media Server
