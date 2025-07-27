@@ -1,5 +1,4 @@
 ---
-project: network-stack
 services: 
   adguardhome:
     image: adguard/adguardhome
@@ -9,8 +8,8 @@ services:
       - 53:53/udp
       - 3000:3000
     volumes:
-      - ${configs}/adguardhome:/opt/adguardhome/work
-      - ${configs}/adguardhome:/opt/adguardhome/conf
+      - ~/adguardhome:/opt/adguardhome/work
+      - ~/adguardhome:/opt/adguardhome/conf
     restart: unless-stopped
     networks:
       wg-easy:
@@ -24,17 +23,18 @@ services:
     environment:
       - LANG=en
       - HOSTNAME=wireguard
-      - PASSWORD_HASH=${passwordHash}
+      - PASSWORD_HASH=$$2a$$12$$ViQ.M.kl3OkL5cD/Vgde1Oy.8wEBQAiWob.PU2qd0WtrX4xmSofOq
       # Password is deprecated see:
       #  - https://github.com/wg-easy/wg-easy/tree/master?tab=readme-ov-file#2-run-wireguard-easy
       #  - https://github.com/wg-easy/wg-easy/blob/master/How_to_generate_an_bcrypt_hash.md
-      - WG_HOST=${publicIp}
+      - WG_HOST=84.73.196.77
       - WG_DEFAULT_DNS=10.8.1.3
       - WG_DEFAULT_ADDRESS=10.8.0.x
       - PORT=51821
       - WG_PORT=51820
     volumes:
-      - ${configs}/wireguard:/etc/wireguard
+      - ~/wireguard:/etc/wireguard
+    restart: unless-stopped    
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

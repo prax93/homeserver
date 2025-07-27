@@ -1,5 +1,4 @@
 ---
-project: download-stack
 services:
   transmission:
     image: lscr.io/linuxserver/transmission:latest
@@ -7,19 +6,35 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - LOG_LEVEL=info
       - TZ=Europe/Zurich
     volumes:
-      - ${configs}/transmission:/config
-      - ${downloads}:/downloads/complete
-      - ${movies}:/Movies
-      - ${tvShows}:/Tv
+      - /mnt/nfs/docker_config/singleTorrent:/config
+      - /mnt/nfs/Downloads/:/downloads
+      - /mnt/nfs/Movies:/Movies
+      - /mnt/nfs/Tv/sonarr:/Tv
     ports:
-      - 9091:9091
+      - 9095:9091
     restart: unless-stopped
   jdownloader:
     image: jlesage/jdownloader-2
     container_name: jdownloader
     volumes:
-      - ${configs}/jdownloader:/config
-      - ${downloads}/complete:/output
-  ## Qbittorrent => new Feature 
+      - ~/jdownloader:/config
+      - /mnt/nfs/Downloads/complete:/output
+    restart: unless-stopped
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - LOG_LEVEL=info
+      - TZ=Europe/Zurich
+      - WEBUI_PORT=9090
+    volumes:
+      - ~/qbittorrent:/config
+      - /mnt/nfs/Downloads:/downloads
+    ports:
+      - 9090:9090
+    restart: unless-stopped

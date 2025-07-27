@@ -1,11 +1,69 @@
 ---
-project: monitoring-stack
-services: 
-  dozzle:
-    container_name: dozzle
-    image: amir20/dozzle:latest
+services:
+  prometheus:
+    container_name: prometheus
     ports:
-      - 8888:8080
+      - "9080:9090"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    image: "prom/prometheus"
+    networks:
+      - monitoring
     restart: unless-stopped
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    pid: host
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+    networks:
+      - monitoring
+  c-advisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: c-advisor
+    privileged: true
+    devices:
+      - /dev/kmsg
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /sys:/sys:ro
+      - /var/run:/var/run:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - monitoring
+    restart: unless-stopped
+  loki:
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki.yml:/mnt/config/loki-config.yml
+    networks:
+      - monitoring
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana-oss
+    user: '1000'
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+     - '3030:3000'
+    volumes:
+      - '~/grafana:/var/lib/grafana'
+    networks:
+      - monitoring
+networks:
+  monitoring:
+    driver: bridge

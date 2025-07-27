@@ -1,0 +1,37 @@
+---
+services: 
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+      - LOG_LEVEL=info
+    volumes:
+      - ~/heimdall:/config
+    ports:
+      - 80:80
+    restart: unless-stopped
+  ntfy:
+    image: binwiederhier/ntfy:latest
+    container_name: ntfy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Zurich
+      - LOG_LEVEL=info
+    volumes:
+      - ~/ntfy:/var/lib/ntfy:rw
+    ports:
+      - 9000:80
+    restart: unless-stopped
+  isponsorblock:
+    image: ghcr.io/dmunozv04/isponsorblocktv:latest
+    container_name: iSponsorBlockTV
+    environment:
+      - TZ=Europe/Zurich
+      - LOG_LEVEL=debug
+    volumes:
+      - ~/sponsorblock:/app/data
+    restart: unless-stopped
