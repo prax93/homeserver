@@ -5,7 +5,7 @@ services:
     ports:
       - "9080:9090"
     volumes:
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
     image: "prom/prometheus"
     networks:
       - monitoring
@@ -49,7 +49,21 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki.yml:/mnt/config/loki-config.yml
+      - ./config/loki.yml:/mnt/config/loki-config.yml
+    networks:
+      - monitoring
+    restart: unless-stopped
+  alloy:
+    image: grafana/alloy
+    volumes:
+      - ./config/alloy.config:/etc/alloy/config.alloy
+    ports:
+      - 12345:12345
+    command:
+      - run
+      - --server.http.listen.addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
     networks:
       - monitoring
     restart: unless-stopped
@@ -59,7 +73,7 @@ services:
     container_name: grafana
     restart: unless-stopped
     ports:
-     - '3030:3000'
+      - '3030:3000'
     volumes:
       - '~/grafana:/var/lib/grafana'
     networks:
