@@ -57,6 +57,11 @@ services:
     image: grafana/alloy
     volumes:
       - ./configs/alloy.config:/etc/alloy/config.alloy
+      - /:/rootfs:ro
+      - /sys:/sys:ro
+      - /var/run:/var/run:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
     ports:
       - 12345:12345
     command:
@@ -81,3 +86,4 @@ services:
 networks:
   monitoring:
     driver: bridge
+
