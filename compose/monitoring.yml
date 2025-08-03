@@ -5,7 +5,7 @@ services:
     ports:
       - "9080:9090"
     volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
     image: "prom/prometheus"
     networks:
       - monitoring
@@ -26,7 +26,7 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
     networks:
-      - monitoringa
+      - monitoring
   c-advisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: c-advisor
@@ -49,21 +49,21 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./config/loki.yml:/mnt/config/loki-config.yml
+      - ./configs/loki.yml:/mnt/config/loki-config.yml
     networks:
       - monitoring
     restart: unless-stopped
   alloy:
     image: grafana/alloy
     volumes:
-      - ./config/alloy.config:/etc/alloy/config.alloy
+      - ./configs/alloy.config:/etc/alloy/config.alloy
     ports:
       - 12345:12345
     command:
       - run
-      - --server.http.listen.addr=0.0.0.0:12345
-      - --storage.path=/var/lib/alloy/data
       - /etc/alloy/config.alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
     networks:
       - monitoring
     restart: unless-stopped
