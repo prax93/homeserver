@@ -17,10 +17,11 @@ services:
     image: binwiederhier/ntfy:latest
     container_name: ntfy
     environment:
-      - PUID=1000
-      - PGID=1000
+      - NTFY_UPSTREAM_BASE_URL=https://ntfy.sh
+      - NTFY_ENABLE_LOGIN=true
       - TZ=Europe/Zurich
-      - LOG_LEVEL=info
+      - NTFY_LOG_FORMAT=json
+      - NTFY_LOG_LEVEL=info
     volumes:
       - ~/ntfy:/var/lib/ntfy:rw
     ports:
