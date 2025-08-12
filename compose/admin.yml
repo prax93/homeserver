@@ -20,7 +20,6 @@ services:
       - NTFY_UPSTREAM_BASE_URL=https://ntfy.sh
       - PUID=1000
       - PGID=1000
-      - NTFY_ENABLE_LOGIN=true
       - TZ=Europe/Zurich
       - NTFY_LOG_FORMAT=json
       - NTFY_LOG_LEVEL=info
