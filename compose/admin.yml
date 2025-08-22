@@ -16,13 +16,15 @@ services:
   ntfy:
     image: binwiederhier/ntfy:latest
     container_name: ntfy
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Zurich
-      - LOG_LEVEL=info
     volumes:
       - ~/ntfy:/var/lib/ntfy:rw
+    environment:
+      - TZ=Europe/Zurich
+      - NTFY_LOG_LEVEL=info
+      - NTFY_BASE_URL=http://ntfy.home.local
+      - NTFY_UPSTREAM_BASE_URL=https://ntfy.sh
+    command:
+      - serve
     ports:
       - 9000:80
     restart: unless-stopped
