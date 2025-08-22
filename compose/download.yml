@@ -21,7 +21,9 @@ services:
     container_name: jdownloader
     volumes:
       - ~/jdownloader:/config
-      - /mnt/nfs/Downloads/complete:/output
+      - /mnt/nfs/tmp:/output
+    ports:
+      - 5800:5800
     restart: unless-stopped
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
