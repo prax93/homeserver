@@ -46,6 +46,7 @@ services:
     restart: unless-stopped
   loki:
     image: grafana/loki
+    container_name: loki
     ports:
       - "3100:3100"
     volumes:
@@ -55,6 +56,7 @@ services:
     restart: unless-stopped
   alloy:
     image: grafana/alloy
+    container_name: alloy
     volumes:
       - ./configs/alloy.config:/etc/alloy/config.alloy
       - /:/rootfs:ro
