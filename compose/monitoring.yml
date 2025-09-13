@@ -59,6 +59,7 @@ services:
       - ./configs/alloy.config:/etc/alloy/config.alloy
       - /:/rootfs:ro
       - /sys:/sys:ro
+      - /var/log:/var/log:ro
       - /var/run:/var/run:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
