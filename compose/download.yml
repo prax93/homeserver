@@ -9,7 +9,8 @@ services:
       - LOG_LEVEL=info
       - TZ=Europe/Zurich
     volumes:
-      - /mnt/nfs/docker_config/singleTorrent:/config
+      - ~/singleTorrent:/config
+      - ~/Transmission-WebGui:/usr/share/transmission/public_html
       - /mnt/nfs/Downloads/:/downloads
       - /mnt/nfs/Movies:/Movies
       - /mnt/nfs/Tv/sonarr:/Tv
