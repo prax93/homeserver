@@ -1,6 +1,6 @@
 services:
   booklore:
-    env_file: "./.booklore.env"
+    env_file: "./.env/.booklore.env"
     # Official Docker Hub image:
     image: booklore/booklore:latest
     # Or the GHCR image:
@@ -31,7 +31,7 @@ services:
 
   mariadb:
     image: lscr.io/linuxserver/mariadb:11.4.5
-    env_file: "./.booklore.env"
+    env_file: "./.env/.booklore.env"
     container_name: mariadb
     environment:
       - PUID=1000
