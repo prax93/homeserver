@@ -1,7 +1,7 @@
 ---
 services: 
   heimdall:
-    image: lscr.io/linuxserver/heimdall:latest
+    image: lscr.io/linuxserver/heimdall:2.7.6
     container_name: heimdall
     environment:
       - PUID=1000
@@ -14,7 +14,7 @@ services:
       - 80:80
     restart: unless-stopped
   ntfy:
-    image: binwiederhier/ntfy:latest
+    image: binwiederhier/ntfy:v2.15
     container_name: ntfy
     volumes:
       - ~/ntfy:/var/lib/ntfy:rw
@@ -29,7 +29,7 @@ services:
       - 9000:80
     restart: unless-stopped
   isponsorblock:
-    image: ghcr.io/dmunozv04/isponsorblocktv:latest
+    image: ghcr.io/dmunozv04/isponsorblocktv:v2.6.1
     container_name: iSponsorBlockTV
     environment:
       - TZ=Europe/Zurich

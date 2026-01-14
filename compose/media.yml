@@ -57,7 +57,7 @@ services:
       - ~/jellyserr:/app/config
     restart: unless-stopped
   flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
+    image: ghcr.io/flaresolverr/flaresolverr:v3.4.6
     container_name: flaresolverr
     environment:
       - PUID=1000

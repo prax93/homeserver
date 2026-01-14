@@ -1,7 +1,7 @@
 ---
 services:
   transmission:
-    image: lscr.io/linuxserver/transmission:latest
+    image: lscr.io/linuxserver/transmission:4.0.6
     container_name: transmission
     environment:
       - PUID=1000
@@ -18,7 +18,7 @@ services:
       - 9095:9091
     restart: unless-stopped
   jdownloader:
-    image: jlesage/jdownloader-2
+    image: jlesage/jdownloader-2:v26.01.1
     container_name: jdownloader
     volumes:
       - ~/jdownloader:/config
@@ -30,7 +30,7 @@ services:
       - 9666:9666
     restart: unless-stopped
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
+    image: lscr.io/linuxserver/qbittorrent:5.1.4
     container_name: qbittorrent
     environment:
       - PUID=1000
