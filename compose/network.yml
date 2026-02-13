@@ -23,7 +23,7 @@ services:
     environment:
       - LANG=en
       - HOSTNAME=wireguard
-      - PASSWORD_HASH=${passwordHash}
+      - PASSWORD_HASH=$$2a$$12$$CPhzNRUwP9ZnhgEqR5SOMODRF5tOT8GgBQ0ao8rADUAVk6zvAyaeO
       # Password is deprecated see:
       #  - https://github.com/wg-easy/wg-easy/tree/master?tab=readme-ov-file#2-run-wireguard-easy
       #  - https://github.com/wg-easy/wg-easy/blob/master/How_to_generate_an_bcrypt_hash.md
