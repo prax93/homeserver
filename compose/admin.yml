@@ -37,3 +37,13 @@ services:
     volumes:
       - ~/sponsorblock:/app/data
     restart: unless-stopped
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      DOMAIN: "https://vault.home.local"
+    volumes:
+      - ~/vaultwarden:/data/
+    ports:
+      - 8000:80
