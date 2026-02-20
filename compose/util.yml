@@ -4,7 +4,7 @@ name: util
     container_name: linkding
     image: sissbruecker/linkding:1.45.0-plus
     ports:
-      - '9090:9090'
+      - 9090:9090
     volumes:
-      - '~/linkding:/etc/linkding/data'
+      - ~/linkding:/etc/linkding/data
     restart: unless-stopped
