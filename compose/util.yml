@@ -3,7 +3,7 @@ services:
     container_name: linkding
     image: sissbruecker/linkding:1.45.0-plus
     ports:
-      - 5000:9090
+      - 50555550:9090
     volumes:
       - ~/linkding:/etc/linkding/data
     restart: unless-stopped
