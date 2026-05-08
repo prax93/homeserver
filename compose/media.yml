@@ -80,3 +80,31 @@ services:
     ports:
       - 5000:5000
     restart: unless-stopped
+  aniworld:
+    image: ghcr.io/phoenixthrush/aniworld-downloader:latest
+    container_name: aniworld-downloader
+    # build: .
+    ports:
+      - "4000:8080"
+    volumes:
+      - /mnt/nfs/Anime/One-Piece:/app/Downloads
+      - aniworld:/home/aniworld/.aniworld
+    environment:
+      ANIWORLD_LANGUAGE: "German Dub"  # Default language (German Dub | English Sub | German Sub | English Dub)
+    restart: unless-stopped
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=CEST
+    volumes:
+      - ~/calibre:/config
+      - /mnt/nfs/Books:/books
+    ports:
+      - 4050:8083
+    restart: unless-stopped
+
+volumes:
+  aniworld:
