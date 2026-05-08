@@ -27,6 +27,7 @@ services:
       - '--path.sysfs=/host/sys'
     networks:
       - monitoring
+    restart: unless-stopped
   c-advisor:
     image: gcr.io/cadvisor/cadvisor:v0.55.1
     container_name: c-advisor
