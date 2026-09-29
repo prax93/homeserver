@@ -1,18 +1,5 @@
 ---
 services: 
-  heimdall:
-    image: lscr.io/linuxserver/heimdall:2.7.6
-    container_name: heimdall
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Zurich
-      - LOG_LEVEL=info
-    volumes:
-      - ~/heimdall:/config
-    ports:
-      - 80:80
-    restart: unless-stopped
   ntfy:
     image: binwiederhier/ntfy:v2.15
     container_name: ntfy
