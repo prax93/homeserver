@@ -1,7 +1,7 @@
 ---
 services: 
   ntfy:
-    image: binwiederhier/ntfy:v2.15
+    image: binwiederhier/ntfy:v2.28
     container_name: ntfy
     volumes:
       - ~/ntfy:/var/lib/ntfy:rw
