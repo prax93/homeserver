@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "managerFilePatterns": [
-    "/*.yml"
-  ]
+  "docker-compose": {
+  "default": {
+  "managerFilePatterns": ["/*.yml"]
+  }  
+  }
+
 }
