@@ -3,4 +3,13 @@
   "docker-compose": {
     "managerFilePatterns": ["/(^|\\/).*\\.ya?ml$/"]
     }
+  {
+  "packageRules": [
+    {
+      "matchPackageNames": ["/postgres/"],
+      "matchManagers": ["docker-compose"],
+      "enabled": false
+    }
+  ]
+}
 }
