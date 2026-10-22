@@ -2,8 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "docker-compose": {
     "managerFilePatterns": ["/(^|\\/).*\\.ya?ml$/"]
-    }
-  {
+    },
   "packageRules": [
     {
       "matchPackageNames": ["/postgres/"],
@@ -11,5 +10,4 @@
       "enabled": false
     }
   ]
-}
 }
