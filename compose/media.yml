@@ -17,15 +17,14 @@ services:
       - /mnt/nfs/Movies/:/movies
     restart: unless-stopped
   sonarr:
-    image: lscr.io/linuxserver/sonarr:latest
+    image: lscr.io/linuxserver/sonarr:latest 
+    init: true
     container_name: sonarr
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Europe/Zurich
       - LOG_LEVEL=info
     ports:
-      - 8989:8989
+      - 8989:5055
     volumes:
       - ~/sonarr:/config
       - /mnt/nfs/Tv/sonarr/:/tv
